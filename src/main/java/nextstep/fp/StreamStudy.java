@@ -16,9 +16,10 @@ public class StreamStudy {
         List<String> words = Arrays.asList(contents.split("[\\P{L}]+"));
 
         long count = 0;
-        for (String w : words) {
-            if (w.length() > 12) count++;
-        }
+        count = words.stream().filter(w -> w.length() > 12).count();
+//        for (String w : words) {
+//            if (w.length() > 12) count++;
+//        }
         return count;
     }
 
@@ -39,6 +40,10 @@ public class StreamStudy {
     }
 
     public static long sumOverThreeAndDouble(List<Integer> numbers) {
-        return 0;
+        long sum1 = numbers.stream().filter(number -> number > 3)
+                .map(number -> number * 2)
+                .collect(Collectors.toList()).stream().reduce(0,(x, y) -> x + y);
+        long sum2 = numbers.stream().filter(number -> number < 4).collect(Collectors.toList()).stream().reduce(0,(x, y) -> x + y);
+        return sum1 + sum2;
     }
 }
