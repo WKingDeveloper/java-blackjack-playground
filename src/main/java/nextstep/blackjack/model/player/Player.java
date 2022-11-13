@@ -1,4 +1,4 @@
-package nextstep.blackjack.model;
+package nextstep.blackjack.model.player;
 
 public class Player {
     private PlayerName name;

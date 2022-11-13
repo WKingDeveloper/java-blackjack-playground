@@ -1,7 +1,8 @@
 package nextstep.blackjack;
 
-import nextstep.blackjack.model.Player;
-import nextstep.blackjack.model.Players;
+import nextstep.blackjack.model.card.Cards;
+import nextstep.blackjack.model.player.Player;
+import nextstep.blackjack.model.player.Players;
 import nextstep.blackjack.valid.ValidationPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -62,6 +63,14 @@ public class BlackJack {
 
     }
 
+    @Test
+    @DisplayName("시작 카드 52장 셋팅 확인")
+    void setCard() {
+
+        Cards cards = new Cards();
+        assertThat(cards.getCards().size()).isEqualTo(52);
+
+    }
 
 
 }
