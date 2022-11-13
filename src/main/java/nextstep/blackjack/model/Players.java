@@ -1,12 +1,16 @@
 package nextstep.blackjack.model;
 
-import java.util.Set;
+import java.util.Map;
 
 public class Players {
 
-    Set<Player> players;
+    Map<String,Player> players;
 
-    public Players(Set<Player> players) {
+    public Players(Map<String,Player> players) {
         this.players = players;
+    }
+
+    public Map<String, Player> getPlayers() {
+        return players;
     }
 }
