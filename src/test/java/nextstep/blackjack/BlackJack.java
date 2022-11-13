@@ -1,7 +1,6 @@
 package nextstep.blackjack;
 
 import nextstep.blackjack.model.Player;
-import nextstep.blackjack.model.PlayerName;
 import nextstep.blackjack.model.Players;
 import nextstep.blackjack.valid.ValidationPlayer;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +10,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,6 +42,23 @@ public class BlackJack {
         assertThat(players.getPlayers().keySet().toArray())
                 .usingRecursiveComparison()
                 .isEqualTo(new String[]{"pobi","jason"});
+
+    }
+
+
+
+    @CsvSource(value = {"pobi/ 1000", "jason/ 2000"}, delimiterString = "/")
+    @ParameterizedTest
+    @DisplayName("플레이어에게 배팅 금액을 설정")
+    void setPlayerBattingMoney(String playerName, String money) {
+
+        Map<String, Player> player = new HashMap<>();
+        player.put(playerName, new Player(playerName));
+
+        player.get(playerName).setBatMoney(money);
+
+        assertThat(player.get(playerName).getBatMoney())
+                .isEqualTo(Integer.parseInt(money));
 
     }
 
