@@ -1,4 +1,4 @@
-package nextstep.blackjack;
+package nextstep.blackjack.valid;
 
 import java.util.Arrays;
 import java.util.HashSet;

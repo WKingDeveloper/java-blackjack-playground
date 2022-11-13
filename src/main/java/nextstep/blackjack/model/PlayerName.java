@@ -1,4 +1,4 @@
-package nextstep.blackjack;
+package nextstep.blackjack.model;
 
 public class PlayerName {
     private String name;
