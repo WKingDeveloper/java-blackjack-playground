@@ -1,5 +1,6 @@
 package nextstep.blackjack;
 
+import nextstep.blackjack.model.card.BaseCards;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Player;
 import nextstep.blackjack.model.player.Players;
@@ -60,8 +61,27 @@ public class BlackJack {
     @Test
     @DisplayName("시작 카드 52장 셋팅 확인")
     void setCard() {
-        Cards cards = new Cards();
-        assertThat(cards.getCards().size()).isEqualTo(52);
+        BaseCards baseCards = new BaseCards();
+        assertThat(baseCards.getCards().size()).isEqualTo(52);
+    }
+
+
+
+    @Test
+    @DisplayName("플레이어 및 딜러에게 카드 2장씩 분배")
+    void distributeTwoCardsByPlayers(){
+        String playerNames = "pobi,jason";
+        String[] classifierPlayers = playerNames.split(",");
+        Players players = new Players(classifierPlayers);
+
+        Cards baseCards = new BaseCards();
+        players.distributFirstDraw(baseCards);
+
+        assertThat(players.getPlayers().get("dealer").getCards().size()).isEqualTo(2);
+        assertThat(players.getPlayers().get("pobi").getCards().size()).isEqualTo(2);
+        assertThat(players.getPlayers().get("jason").getCards().size()).isEqualTo(2);
+        assertThat(baseCards.getCards().size()).isEqualTo(46);
+
     }
 
 
