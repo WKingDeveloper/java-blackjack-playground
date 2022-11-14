@@ -9,22 +9,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class BlackJack {
 
 
-    @Test
+    @CsvSource(value = {"pobi,jason,pobi", "pobi,jason,dealer"}, delimiterString = "/")
+    @ParameterizedTest
     @DisplayName("중복된 이름이 있는지 확인")
-    void validPlayerNames() {
-        String playerNamess = "pobi,jason,pobi";
-        String[] classifierPlayers = playerNamess.split(",");
+    void validPlayerNames(String names) {
+        String playerNames = names;
+        String[] classifierPlayers = playerNames.split(",");
 
-        assertThat(ValidationPlayer.validPlayerNames(classifierPlayers)).isFalse();
+        assertThat(ValidationPlayer.validPlayerName(classifierPlayers)).isFalse();
     }
 
 
@@ -33,16 +32,11 @@ public class BlackJack {
     void setPlayerList() {
         String playerNames = "pobi,jason";
         String[] classifierPlayers = playerNames.split(",");
+        Players players = new Players(classifierPlayers);
 
-
-        Map<String, Player> ps = new HashMap<>();
-        Arrays.stream(classifierPlayers)
-                .forEach(playerName -> ps.put(playerName, new Player(playerName)));
-        Players players = new Players(ps);
-
-        assertThat(players.getPlayers().keySet().toArray())
+        assertThat(players.getPlayers().keySet())
                 .usingRecursiveComparison()
-                .isEqualTo(new String[]{"pobi","jason"});
+                .isEqualTo(new HashSet<>(Arrays.asList("pobi","jason","dealer")));
 
     }
 
@@ -66,10 +60,8 @@ public class BlackJack {
     @Test
     @DisplayName("시작 카드 52장 셋팅 확인")
     void setCard() {
-
         Cards cards = new Cards();
         assertThat(cards.getCards().size()).isEqualTo(52);
-
     }
 
 
