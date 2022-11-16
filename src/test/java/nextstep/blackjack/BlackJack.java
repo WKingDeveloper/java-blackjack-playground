@@ -1,6 +1,7 @@
 package nextstep.blackjack;
 
 import nextstep.blackjack.model.card.BaseCards;
+import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Dealer;
 import nextstep.blackjack.model.player.User;
@@ -35,16 +36,13 @@ public class BlackJack {
     @Test
     @DisplayName("플레이어 리스트를 만든다.")
     void setPlayerList() {
-        String playerNames = "pobi,jason";
-        String[] classifierPlayers = playerNames.split(",");
-        Users users = new Users(classifierPlayers);
+        Users users = setUsers();
 
         assertThat(users.getPlayers().keySet())
                 .usingRecursiveComparison()
-                .isEqualTo(new HashSet<>(Arrays.asList("pobi","jason")));
+                .isEqualTo(new HashSet<>(Arrays.asList("pobi", "jason")));
 
     }
-
 
 
     @CsvSource(value = {"pobi/ 1000", "jason/ 2000"}, delimiterString = "/")
@@ -70,13 +68,10 @@ public class BlackJack {
     }
 
 
-
     @Test
-    @DisplayName("플레이어에게 시작 시 카드 2장씩 분배")
-    void distributeTwoCardsByPlayers(){
-        String playerNames = "pobi,jason";
-        String[] classifierPlayers = playerNames.split(",");
-        Users users = new Users(classifierPlayers);
+    @DisplayName("유저들에게 시작 시 카드 2장씩 분배")
+    void distributeTwoCardsByUsers() {
+        Users users = setUsers();
 
         Cards baseCards = new BaseCards();
         users.distributFirstDraw(baseCards);
@@ -88,7 +83,7 @@ public class BlackJack {
 
     @Test
     @DisplayName("딜러에게 시작 시 카드 2장 분배 ")
-    void distributeTwoCardsByDealer(){
+    void distributeTwoCardsByDealer() {
 
         Dealer dealer = new Dealer();
 
@@ -99,5 +94,37 @@ public class BlackJack {
         assertThat(baseCards.getCards().size()).isEqualTo(50);
     }
 
+    @Test
+    @DisplayName("유저와 딜러에게 블랙잭이 있는지 확인")
+    void findHasBlackJackByUsers() {
+        Users users = setUsers();
+        Dealer dealer = new Dealer();
 
+        Card card1 = new Card("10","space");
+        Card card2 = new Card("J","heart");
+        Card card3 = new Card("8","clover");
+        Card card4 = new Card("Q","diamond");
+        Card card5 = new Card("8","heart");
+        Card card6 = new Card("K","space");
+
+        users.getPlayers().get("pobi").getCards().add(card1);
+        users.getPlayers().get("pobi").getCards().add(card2);
+        users.getPlayers().get("jason").getCards().add(card3);
+        users.getPlayers().get("jason").getCards().add(card4);
+        dealer.getCards().add(card5);
+        dealer.getCards().add(card6);
+
+        assertThat(users.findHasBlackJackUsers())
+                .usingRecursiveComparison()
+                .isEqualTo(Arrays.asList("pobi"));
+
+        assertThat(dealer.hasBlackJack()).isEqualTo(true);
+    }
+
+
+    private Users setUsers() {
+        String playerNames = "pobi,jason";
+        String[] classifierPlayers = playerNames.split(",");
+        return new Users(classifierPlayers);
+    }
 }

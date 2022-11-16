@@ -2,10 +2,8 @@ package nextstep.blackjack.model.player;
 
 import nextstep.blackjack.model.card.Cards;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Users {
 
@@ -21,7 +19,16 @@ public class Users {
     }
 
     public void distributFirstDraw(Cards baseCards) {
-        Set<String> keys = this.players.keySet();
-        keys.stream().forEach(key -> this.players.get(key).getFirstDrawCards(baseCards));
+        getPlayerKeys().stream().forEach(key -> this.players.get(key).getFirstDrawCards(baseCards));
     }
+
+    public List<String> findHasBlackJackUsers() {
+        return getPlayerKeys().stream().filter(key -> this.players.get(key).hasBlackJack())
+                .collect(Collectors.toList());
+    }
+
+    private Set<String> getPlayerKeys() {
+        return this.players.keySet();
+    }
+
 }

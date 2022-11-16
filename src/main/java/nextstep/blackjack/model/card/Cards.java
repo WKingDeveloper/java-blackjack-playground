@@ -5,9 +5,15 @@ import java.util.List;
 
 public abstract class Cards {
 
-    List<Card> cards = new ArrayList<>();
+    private List<Card> cards = new ArrayList<>();
+
     public List<Card> getCards() {
         return this.cards;
     }
 
+    public Integer calculateCards() {
+        final int[] sumValue = {0};
+        cards.stream().forEach(card -> sumValue[0] += card.getNumber().value);
+        return sumValue[0];
+    }
 }

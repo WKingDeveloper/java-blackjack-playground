@@ -3,10 +3,10 @@ package nextstep.blackjack.model.card;
 import java.util.Arrays;
 
 public enum CardPattern {
-    DIAMOND("Diamond"),
-    HEART("Heart"),
-    CLOVER("Clover"),
-    SPACE("Space");
+    DIAMOND("diamond"),
+    HEART("heart"),
+    CLOVER("clover"),
+    SPACE("space");
 
     private final String pattern;
 

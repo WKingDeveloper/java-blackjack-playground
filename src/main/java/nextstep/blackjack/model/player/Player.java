@@ -28,4 +28,8 @@ public abstract class Player {
         }
 
     }
+
+    public boolean hasBlackJack(){
+        return this.cards.calculateCards() == 21;
+    };
 }

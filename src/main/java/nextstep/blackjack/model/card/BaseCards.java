@@ -11,13 +11,13 @@ public class BaseCards extends Cards{
 
     private void setCards() {
         String[] numbers = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
-        String[] patterns = {"Diamond", "Heart", "Clover", "Space"};
+        String[] patterns = {"diamond", "heart", "clover", "space"};
 
         Arrays.stream(patterns)
                 .forEach(pattern ->
                         Arrays.stream(numbers)
                         .forEach(number ->
-                                this.cards.add(new Card(number,pattern))));
-        Collections.shuffle(this.cards);
+                                this.getCards().add(new Card(number,pattern))));
+        Collections.shuffle(this.getCards());
     }
 }

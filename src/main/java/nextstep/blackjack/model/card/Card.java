@@ -8,4 +8,12 @@ public class Card {
         this.number = CardNumber.findCardNumber(number);
         this.pattern = CardPattern.findCardPattern(pattern);
     }
+
+    public CardNumber getNumber() {
+        return number;
+    }
+
+    public CardPattern getPattern() {
+        return pattern;
+    }
 }
