@@ -20,8 +20,7 @@ public class Dealer extends Player{
 
     private void validCardsValue(Cards cards) {
         if (getCards().calculateCards() < 17) {
-            this.getCards().getCards().add(cards.getCards().get(0));
-            cards.getCards().remove(0);
+            addCard(cards);
         }
     }
 }

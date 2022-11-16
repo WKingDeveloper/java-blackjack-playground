@@ -138,7 +138,17 @@ public class BlackJack {
         assertThat(dealer.getCards().getCards().size()).isEqualTo(3);
     }
 
+    @Test
+    @DisplayName("유저가 원하는 경우 카드를 더 받게 한다.")
+    void addUserCard() {
+        BaseCards cards = new BaseCards();
+        Users users = setUsers();
+        users.distributFirstDraw(cards);
+        users.getPlayers().get("pobi").addCard(cards);
 
+        assertThat(users.getPlayers().get("pobi").getCards().getCards().size()).isEqualTo(3);
+        assertThat(users.getPlayers().get("jason").getCards().getCards().size()).isEqualTo(2);
+    }
 
     private Users setUsers() {
         String playerNames = "pobi,jason";

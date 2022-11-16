@@ -26,5 +26,10 @@ public abstract class Player {
         return this.cards.calculateCards() == 21;
     }
 
+    public void addCard(Cards cards) {
+        this.getCards().getCards().add(cards.getCards().get(0));
+        cards.getCards().remove(0);
+    }
+
 
 }
