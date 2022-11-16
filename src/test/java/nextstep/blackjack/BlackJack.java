@@ -3,6 +3,7 @@ package nextstep.blackjack;
 import nextstep.blackjack.model.card.BaseCards;
 import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
+import nextstep.blackjack.model.card.PlayerCards;
 import nextstep.blackjack.model.player.Dealer;
 import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
@@ -76,8 +77,8 @@ public class BlackJack {
         Cards baseCards = new BaseCards();
         users.distributFirstDraw(baseCards);
 
-        assertThat(users.getPlayers().get("pobi").getCards().size()).isEqualTo(2);
-        assertThat(users.getPlayers().get("jason").getCards().size()).isEqualTo(2);
+        assertThat(users.getPlayers().get("pobi").getCards().getCards().size()).isEqualTo(2);
+        assertThat(users.getPlayers().get("jason").getCards().getCards().size()).isEqualTo(2);
         assertThat(baseCards.getCards().size()).isEqualTo(48);
     }
 
@@ -90,7 +91,7 @@ public class BlackJack {
         Cards baseCards = new BaseCards();
         dealer.getFirstDrawCards(baseCards);
 
-        assertThat(dealer.getCards().size()).isEqualTo(2);
+        assertThat(dealer.getCards().getCards().size()).isEqualTo(2);
         assertThat(baseCards.getCards().size()).isEqualTo(50);
     }
 
@@ -107,12 +108,12 @@ public class BlackJack {
         Card card5 = new Card("8","heart");
         Card card6 = new Card("K","space");
 
-        users.getPlayers().get("pobi").getCards().add(card1);
-        users.getPlayers().get("pobi").getCards().add(card2);
-        users.getPlayers().get("jason").getCards().add(card3);
-        users.getPlayers().get("jason").getCards().add(card4);
-        dealer.getCards().add(card5);
-        dealer.getCards().add(card6);
+        users.getPlayers().get("pobi").getCards().getCards().add(card1);
+        users.getPlayers().get("pobi").getCards().getCards().add(card2);
+        users.getPlayers().get("jason").getCards().getCards().add(card3);
+        users.getPlayers().get("jason").getCards().getCards().add(card4);
+        dealer.getCards().getCards().add(card5);
+        dealer.getCards().getCards().add(card6);
 
         assertThat(users.findHasBlackJackUsers())
                 .usingRecursiveComparison()
@@ -120,6 +121,23 @@ public class BlackJack {
 
         assertThat(dealer.hasBlackJack()).isEqualTo(true);
     }
+
+    @Test
+    @DisplayName("딜러가 16이하 카드를 가질 경우 한장을 더 받게 한다.")
+    void validDealerCardsValue(){
+        Dealer dealer = new Dealer();
+
+        Card card1 = new Card("5","space");
+        Card card2 = new Card("10","heart");
+        BaseCards cards = new BaseCards();
+        cards.getCards().add(0,card1);
+        cards.getCards().add(1,card2);
+
+        dealer.getFirstDrawCards(cards);
+
+        assertThat(dealer.getCards().getCards().size()).isEqualTo(3);
+    }
+
 
 
     private Users setUsers() {

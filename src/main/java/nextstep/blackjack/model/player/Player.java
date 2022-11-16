@@ -16,20 +16,15 @@ public abstract class Player {
         this.name = new PlayerName(playerName);
     }
 
-    public List<Card> getCards() {
-        return this.cards.getCards();
+    public PlayerCards getCards() {
+        return this.cards;
     }
 
-    public void getFirstDrawCards(Cards cards) {
-
-        for (int i = 0; i < 2; i++) {
-            this.cards.getCards().add(cards.getCards().get(i));
-            cards.getCards().remove(i);
-        }
-
-    }
+    public abstract void getFirstDrawCards(Cards cards);
 
     public boolean hasBlackJack(){
         return this.cards.calculateCards() == 21;
-    };
+    }
+
+
 }
