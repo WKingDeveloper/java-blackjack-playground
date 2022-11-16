@@ -2,15 +2,19 @@ package nextstep.blackjack;
 
 import nextstep.blackjack.model.card.BaseCards;
 import nextstep.blackjack.model.card.Cards;
-import nextstep.blackjack.model.player.Player;
-import nextstep.blackjack.model.player.Players;
+import nextstep.blackjack.model.player.Dealer;
+import nextstep.blackjack.model.player.User;
+import nextstep.blackjack.model.player.Users;
 import nextstep.blackjack.valid.ValidationPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,11 +37,11 @@ public class BlackJack {
     void setPlayerList() {
         String playerNames = "pobi,jason";
         String[] classifierPlayers = playerNames.split(",");
-        Players players = new Players(classifierPlayers);
+        Users users = new Users(classifierPlayers);
 
-        assertThat(players.getPlayers().keySet())
+        assertThat(users.getPlayers().keySet())
                 .usingRecursiveComparison()
-                .isEqualTo(new HashSet<>(Arrays.asList("pobi","jason","dealer")));
+                .isEqualTo(new HashSet<>(Arrays.asList("pobi","jason")));
 
     }
 
@@ -48,8 +52,8 @@ public class BlackJack {
     @DisplayName("플레이어에게 배팅 금액을 설정")
     void setPlayerBattingMoney(String playerName, String money) {
 
-        Map<String, Player> player = new HashMap<>();
-        player.put(playerName, new Player(playerName));
+        Map<String, User> player = new HashMap<>();
+        player.put(playerName, new User(playerName));
 
         player.get(playerName).setBatMoney(money);
 
@@ -68,20 +72,31 @@ public class BlackJack {
 
 
     @Test
-    @DisplayName("플레이어 및 딜러에게 카드 2장씩 분배")
+    @DisplayName("플레이어에게 시작 시 카드 2장씩 분배")
     void distributeTwoCardsByPlayers(){
         String playerNames = "pobi,jason";
         String[] classifierPlayers = playerNames.split(",");
-        Players players = new Players(classifierPlayers);
+        Users users = new Users(classifierPlayers);
 
         Cards baseCards = new BaseCards();
-        players.distributFirstDraw(baseCards);
+        users.distributFirstDraw(baseCards);
 
-        assertThat(players.getPlayers().get("dealer").getCards().size()).isEqualTo(2);
-        assertThat(players.getPlayers().get("pobi").getCards().size()).isEqualTo(2);
-        assertThat(players.getPlayers().get("jason").getCards().size()).isEqualTo(2);
-        assertThat(baseCards.getCards().size()).isEqualTo(46);
+        assertThat(users.getPlayers().get("pobi").getCards().size()).isEqualTo(2);
+        assertThat(users.getPlayers().get("jason").getCards().size()).isEqualTo(2);
+        assertThat(baseCards.getCards().size()).isEqualTo(48);
+    }
 
+    @Test
+    @DisplayName("딜러에게 시작 시 카드 2장 분배 ")
+    void distributeTwoCardsByDealer(){
+
+        Dealer dealer = new Dealer();
+
+        Cards baseCards = new BaseCards();
+        dealer.getFirstDrawCards(baseCards);
+
+        assertThat(dealer.getCards().size()).isEqualTo(2);
+        assertThat(baseCards.getCards().size()).isEqualTo(50);
     }
 
 

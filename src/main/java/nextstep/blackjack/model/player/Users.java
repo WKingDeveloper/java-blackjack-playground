@@ -7,17 +7,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Players {
+public class Users {
 
-    Map<String,Player> players = new HashMap<>();
+    Map<String,User> players = new HashMap<>();
 
-    public Players(String[] playerNames) {
-        this.players.put("dealer", new Player("dealer"));
+    public Users(String[] playerNames) {
         Arrays.stream(playerNames)
-                .forEach(playerName -> this.players.put(playerName, new Player(playerName)));
+                .forEach(playerName -> this.players.put(playerName, new User(playerName)));
     }
 
-    public Map<String, Player> getPlayers() {
+    public Map<String, User> getPlayers() {
         return players;
     }
 
