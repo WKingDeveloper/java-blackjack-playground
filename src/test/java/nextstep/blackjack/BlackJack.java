@@ -5,18 +5,17 @@ import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.card.PlayerCards;
 import nextstep.blackjack.model.player.Dealer;
+import nextstep.blackjack.model.player.Money;
 import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
+import nextstep.blackjack.model.rule.Revenue;
 import nextstep.blackjack.valid.ValidationPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -101,12 +100,12 @@ public class BlackJack {
         Users users = setUsers();
         Dealer dealer = new Dealer();
 
-        Card card1 = new Card("10","space");
-        Card card2 = new Card("J","heart");
-        Card card3 = new Card("8","clover");
-        Card card4 = new Card("Q","diamond");
-        Card card5 = new Card("8","heart");
-        Card card6 = new Card("K","space");
+        Card card1 = new Card("10", "space");
+        Card card2 = new Card("J", "heart");
+        Card card3 = new Card("8", "clover");
+        Card card4 = new Card("Q", "diamond");
+        Card card5 = new Card("8", "heart");
+        Card card6 = new Card("K", "space");
 
         users.getPlayers().get("pobi").getCards().getCards().add(card1);
         users.getPlayers().get("pobi").getCards().getCards().add(card2);
@@ -124,16 +123,16 @@ public class BlackJack {
 
     @Test
     @DisplayName("딜러가 16이하 카드를 가질 경우 한장을 더 받게 한다.")
-    void validDealerCardsValue(){
+    void validDealerCardsValue() {
         Dealer dealer = new Dealer();
 
-        Card card1 = new Card("5","space");
-        Card card2 = new Card("10","heart");
-        BaseCards cards = new BaseCards();
-        cards.getCards().add(0,card1);
-        cards.getCards().add(1,card2);
+        Card card1 = new Card("5", "space");
+        Card card2 = new Card("10", "heart");
 
-        dealer.getFirstDrawCards(cards);
+        dealer.getCards().getCards().add(card1);
+        dealer.getCards().getCards().add(card2);
+
+        dealer.validCardsValue(new BaseCards());
 
         assertThat(dealer.getCards().getCards().size()).isEqualTo(3);
     }
@@ -154,5 +153,64 @@ public class BlackJack {
         String playerNames = "pobi,jason";
         String[] classifierPlayers = playerNames.split(",");
         return new Users(classifierPlayers);
+    }
+
+    @Test
+    @DisplayName("유저가 첫 카드 2장에 블랙잭 나온 경우 승리 보상 - 딜러가 블랙잭이 아닌 경우")
+    void firstRoundResultisDealerBlackJackFalse() {
+        Users users = setUsers();
+        Dealer dealer = new Dealer();
+
+        Card card1 = new Card("10", "space");
+        Card card2 = new Card("J", "heart");
+        Card card3 = new Card("8", "clover");
+        Card card4 = new Card("Q", "diamond");
+        Card card5 = new Card("7", "heart");
+        Card card6 = new Card("K", "space");
+
+        users.getPlayers().get("pobi").getCards().getCards().add(card1);
+        users.getPlayers().get("pobi").getCards().getCards().add(card2);
+        users.getPlayers().get("jason").getCards().getCards().add(card3);
+        users.getPlayers().get("jason").getCards().getCards().add(card4);
+
+        users.getPlayers().get("pobi").setBatMoney("1000");
+        users.getPlayers().get("jason").setBatMoney("3000");
+
+        dealer.getCards().getCards().add(card5);
+        dealer.getCards().getCards().add(card6);
+
+
+        Revenue.firstRoundResult(users,dealer.hasBlackJack());
+        assertThat(users.getPlayers().get("pobi").getRevenue()).isEqualTo(1500);
+
+    }
+
+    @Test
+    @DisplayName("유저가 첫 카드 2장에 블랙잭 나온 경우 승리 보상 - 딜러가 블랙잭인 경우")
+    void firstRoundResultisDealerBlackJackTrue() {
+        Users users = setUsers();
+        Dealer dealer = new Dealer();
+
+        Card card1 = new Card("10", "space");
+        Card card2 = new Card("J", "heart");
+        Card card3 = new Card("8", "clover");
+        Card card4 = new Card("Q", "diamond");
+        Card card5 = new Card("8", "heart");
+        Card card6 = new Card("K", "space");
+
+        users.getPlayers().get("pobi").getCards().getCards().add(card1);
+        users.getPlayers().get("pobi").getCards().getCards().add(card2);
+        users.getPlayers().get("jason").getCards().getCards().add(card3);
+        users.getPlayers().get("jason").getCards().getCards().add(card4);
+
+        users.getPlayers().get("pobi").setBatMoney("1000");
+        users.getPlayers().get("jason").setBatMoney("3000");
+
+        dealer.getCards().getCards().add(card5);
+        dealer.getCards().getCards().add(card6);
+
+        Revenue.firstRoundResult(users,dealer.hasBlackJack());
+        assertThat(users.getPlayers().get("pobi").getRevenue()).isEqualTo(1000);
+
     }
 }

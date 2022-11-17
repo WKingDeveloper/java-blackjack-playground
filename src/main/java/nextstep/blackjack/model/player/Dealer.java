@@ -13,12 +13,10 @@ public class Dealer extends Player{
             this.getCards().getCards().add(cards.getCards().get(i));
             cards.getCards().remove(i);
         }
-
-        validCardsValue(cards);
     }
 
 
-    private void validCardsValue(Cards cards) {
+    public void validCardsValue(Cards cards) {
         if (getCards().calculateCards() < 17) {
             addCard(cards);
         }

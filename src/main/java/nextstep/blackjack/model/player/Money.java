@@ -8,6 +8,10 @@ public class Money {
         this.money = Integer.parseInt(money);
     }
 
+    public Money(Integer money) {
+        this.money = money;
+    }
+
     public Integer getMoney() {
         return this.money;
     }
