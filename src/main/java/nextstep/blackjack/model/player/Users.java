@@ -31,4 +31,15 @@ public class Users {
         return this.players.keySet();
     }
 
+    public Integer getUsersRevenue() {
+        Integer value = 0;
+        Set<String> keys = players.keySet();
+
+        for (String key:keys) {
+            value += players.get(key).getRevenue();
+        }
+
+        return value;
+    }
+
 }
