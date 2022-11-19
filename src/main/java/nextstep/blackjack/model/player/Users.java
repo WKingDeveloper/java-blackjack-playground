@@ -9,7 +9,7 @@ public class Users {
 
     Map<String,User> players = new HashMap<>();
 
-    public Users(String[] playerNames) {
+    public  Users(String[] playerNames) {
         Arrays.stream(playerNames)
                 .forEach(playerName -> this.players.put(playerName, new User(playerName)));
     }
@@ -27,7 +27,7 @@ public class Users {
                 .collect(Collectors.toList());
     }
 
-    private Set<String> getPlayerKeys() {
+    public Set<String> getPlayerKeys() {
         return this.players.keySet();
     }
 
@@ -36,7 +36,7 @@ public class Users {
         Set<String> keys = players.keySet();
 
         for (String key:keys) {
-            value += players.get(key).getRevenue();
+            value += players.get(key).getRevenue() * -1;
         }
 
         return value;

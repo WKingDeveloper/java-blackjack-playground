@@ -1,5 +1,6 @@
 package nextstep.blackjack.model.player;
 
+import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.card.PlayerCards;
 
@@ -36,5 +37,14 @@ public abstract class Player {
 
     public void setRevenue(Money revenue) {
         this.revenue = revenue;
+    }
+
+    public String getCardsNames() {
+        String cardNames = "";
+        for(Card card : this.cards.getCards()){
+            cardNames += ", " + card.getNumber().getValue().toString() +card.getPattern().getValue().toString();
+        }
+        cardNames = cardNames.replaceFirst(", ", "");
+        return cardNames;
     }
 }

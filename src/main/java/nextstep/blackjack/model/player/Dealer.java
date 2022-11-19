@@ -16,9 +16,11 @@ public class Dealer extends Player{
     }
 
 
-    public void validCardsValue(Cards cards) {
+    public boolean validCardsValue(Cards cards) {
         if (getCards().calculateCards() < 17) {
             addCard(cards);
+            return true;
         }
+        return false;
     }
 }

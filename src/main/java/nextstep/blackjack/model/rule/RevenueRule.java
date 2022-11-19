@@ -8,35 +8,18 @@ import nextstep.blackjack.model.player.Users;
 import java.util.List;
 import java.util.Set;
 
-public class Revenue {
+public class RevenueRule {
 
-    public static void result(int round, Users users, Dealer dealer) {
+    public static boolean result(boolean isFirst, Users users, Dealer dealer) {
 
-        if(round == 0) {
-            firstRoundResult(users, dealer);
-            return;
+        if(isFirst) {
+            return firstRoundResult(users, dealer);
+
         }
-        roundResult(users,dealer);
+        return roundResult(users,dealer);
     }
 
-    private static void firstRoundResult(Users users, Dealer dealer) {
-
-        List<String> findHasBlackJackByUsers = users.findHasBlackJackUsers();
-        if (findHasBlackJackByUsers.size() == 0) {
-            return;
-        }
-
-        if (!dealer.hasBlackJack()) {
-            findHasBlackJackByUsers.stream().forEach(user ->
-                    users.getPlayers().get(user).setRevenue(new Money((int)(users.getPlayers().get(user).getBatMoney()*1.5))));
-            return;
-        }
-        findHasBlackJackByUsers.stream().forEach(user ->
-                users.getPlayers().get(user).setRevenue(new Money((users.getPlayers().get(user).getBatMoney()))));
-
-    }
-
-    public static void roundResult(Users users, Dealer dealer) {
+    private static boolean firstRoundResult(Users users, Dealer dealer) {
         Set<String> keys = users.getPlayers().keySet();
         Integer dealerValue = dealer.getCards().calculateCards();
         if (dealerValue>21){
@@ -46,7 +29,37 @@ public class Revenue {
                     user.setRevenue(new Money(user.getBatMoney()));
                 }
             }
-            return;
+            return true;
+        }
+
+
+        List<String> findHasBlackJackByUsers = users.findHasBlackJackUsers();
+        if (findHasBlackJackByUsers.size() == 0) {
+            return false;
+        }
+
+        if (!dealer.hasBlackJack()) {
+            findHasBlackJackByUsers.stream().forEach(user ->
+                    users.getPlayers().get(user).setRevenue(new Money((int)(users.getPlayers().get(user).getBatMoney()*1.5))));
+            return false;
+        }
+        findHasBlackJackByUsers.stream().forEach(user ->
+                users.getPlayers().get(user).setRevenue(new Money((users.getPlayers().get(user).getBatMoney()))));
+        return false;
+
+    }
+
+    public static boolean roundResult(Users users, Dealer dealer) {
+        Set<String> keys = users.getPlayers().keySet();
+        Integer dealerValue = dealer.getCards().calculateCards();
+        if (dealerValue>21){
+            for (String key : keys) {
+                User user = users.getPlayers().get(key);
+                if(user.getRevenue() == 0){
+                    user.setRevenue(new Money(user.getBatMoney()));
+                }
+            }
+            return true;
         }
 
         for (String key : keys) {
@@ -64,10 +77,11 @@ public class Revenue {
             user.setRevenue(new Money(user.getBatMoney()));
 
         }
+        return true;
     }
 
     public static void dealerRevenue(Users users, Dealer dealer) {
-        dealer.setRevenue(new Money(users.getUsersRevenue() * -1));
+        dealer.setRevenue(new Money(users.getUsersRevenue()));
     }
 
 }
