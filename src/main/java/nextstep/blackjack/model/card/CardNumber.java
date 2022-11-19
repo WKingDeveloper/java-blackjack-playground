@@ -18,7 +18,7 @@ public enum CardNumber {
     KING("K",13);
 
     private final String number;
-    public Integer value;
+    private final Integer value;
 
     CardNumber(String number,Integer value) {
         this.number = number;

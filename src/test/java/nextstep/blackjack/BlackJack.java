@@ -6,7 +6,7 @@ import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Dealer;
 import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
-import nextstep.blackjack.model.rule.Revenue;
+import nextstep.blackjack.model.rule.RevenueRule;
 import nextstep.blackjack.valid.ValidationPlayer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -181,7 +181,7 @@ public class BlackJack {
         dealer.getCards().getCards().add(card6);
 
 
-        Revenue.result(0,users,dealer);
+        RevenueRule.result(true,users,dealer);
         assertThat(users.getPlayers().get("pobi").getRevenue()).isEqualTo(1500);
 
     }
@@ -210,7 +210,7 @@ public class BlackJack {
         dealer.getCards().getCards().add(card5);
         dealer.getCards().getCards().add(card6);
 
-        Revenue.result(0,users,dealer);
+        RevenueRule.result(true,users,dealer);
         assertThat(users.getPlayers().get("pobi").getRevenue()).isEqualTo(1000);
     }
 
@@ -238,12 +238,41 @@ public class BlackJack {
         dealer.getCards().getCards().add(card5);
         dealer.getCards().getCards().add(card6);
 
-        Revenue.result(1,users,dealer);
-        Revenue.dealerRevenue(users,dealer);
+        RevenueRule.result(false,users,dealer);
+        RevenueRule.dealerRevenue(users,dealer);
         assertThat(users.getPlayers().get("pobi").getRevenue()).isEqualTo(1000);
         assertThat(users.getPlayers().get("jason").getRevenue()).isEqualTo(-3000);
         assertThat(dealer.getRevenue()).isEqualTo(2000);
     }
+
+
+    @Test
+    @DisplayName("A의 숫자 계산 - 1 or 11")
+    void classificateACard() {
+        Users users = setUsers();
+        users.getPlayers().put("wkd",new User("wkd"));
+
+        Card card1 = new Card("A", "space");
+        Card card2 = new Card("J", "heart");
+        Card card3 = new Card("A", "clover");
+        Card card4 = new Card("10", "diamond");
+        Card card5 = new Card("9", "heart");
+        Card card6 = new Card("A", "heart");
+        Card card7 = new Card("A", "diamond");
+
+        users.getPlayers().get("pobi").getCards().getCards().add(card1);
+        users.getPlayers().get("pobi").getCards().getCards().add(card2);
+        users.getPlayers().get("jason").getCards().getCards().add(card3);
+        users.getPlayers().get("jason").getCards().getCards().add(card4);
+        users.getPlayers().get("wkd").getCards().getCards().add(card5);
+        users.getPlayers().get("wkd").getCards().getCards().add(card6);
+        users.getPlayers().get("wkd").getCards().getCards().add(card7);
+
+        assertThat(users.getPlayers().get("pobi").getCards().calculateCards()).isEqualTo(12);
+        assertThat(users.getPlayers().get("jason").getCards().calculateCards()).isEqualTo(21);
+        assertThat(users.getPlayers().get("wkd").getCards().calculateCards()).isEqualTo(21);
+    }
+
 
 
 }
