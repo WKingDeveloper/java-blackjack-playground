@@ -18,11 +18,11 @@ public enum CardNumber {
     KING("K",10);
 
     private final String name;
-    private final int score;
+    private final int value;
 
-    CardNumber(final String name, final int score) {
+    CardNumber(final String name, final int value) {
         this.name = name;
-        this.score = score;
+        this.value = value;
     }
 
     public static CardNumber findCardNumber(String name) {
@@ -40,8 +40,8 @@ public enum CardNumber {
         return this == ACE;
     }
 
-    public int getScore() {
-        return score;
+    public int getValue() {
+        return value;
     }
 
 }

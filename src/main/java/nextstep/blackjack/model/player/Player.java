@@ -10,10 +10,12 @@ public abstract class Player {
     private Cards cards;
     private PlayerName name;
     private Money batMoney;
+    private Money revenueMoney;
 
     public Player(String name) {
         this.name = new PlayerName(name);
         this.batMoney = new Money("0");
+        this.revenueMoney = new Money("0");
         this.cards = new Cards();
 
     }
@@ -22,8 +24,8 @@ public abstract class Player {
         return this.name.getName();
     }
 
-    public void setBatMoney(String s){
-        this.batMoney = new Money(s);
+    public void setBatMoney(String money){
+        this.batMoney = new Money(money);
     }
 
     public Integer getBatMoney() {
@@ -39,5 +41,18 @@ public abstract class Player {
             this.cards.getCards().add(gameCards.getCards().get(i));
             gameCards.getCards().remove(i);
         }
+    }
+
+    public Integer getRevenueMoney() {
+        return this.revenueMoney.getMoney();
+    }
+
+
+    public Integer getCardsValue() {
+        return this.cards.calculateCardsValue();
+    }
+
+    public void setRevenueMoney(Integer money) {
+        this.revenueMoney = new Money(money);
     }
 }

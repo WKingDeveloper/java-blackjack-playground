@@ -1,5 +1,8 @@
 package nextstep.blackjack;
 
+import nextstep.blackjack.model.card.Card;
+import nextstep.blackjack.model.card.CardNumber;
+import nextstep.blackjack.model.card.CardPattern;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Dealer;
 import nextstep.blackjack.model.player.User;
@@ -74,6 +77,37 @@ public class PlayerTest {
 
         users.getUsers().stream().forEach(user -> assertThat(user.getCards().size()).isEqualTo(2));
         assertThat(dealer.getCards().size()).isEqualTo(2);
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {"A,10/ 3,4/ 1000/ 1500","A,10/ A,J/ 1000/ 1000"}
+            ,delimiterString = "/")
+    @DisplayName("첫번째 라운드 수익 계산")
+    void calculateFirstRound(String userCards, String dealerCards, String batMoney, String revenue) {
+
+        Users users = new Users();
+
+        User user = new User("wkd");
+        Dealer dealer = new Dealer();
+        RuleService ruleService = new RuleService();
+
+        user.getCards().add(new Card(CardNumber.findCardNumber(userCards.split(",")[0]),
+                CardPattern.findCardPattern("diamond")));
+        user.getCards().add(new Card(CardNumber.findCardNumber(userCards.split(",")[1]),
+                CardPattern.findCardPattern("diamond")));
+        user.setBatMoney(batMoney);
+
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(dealerCards.split(",")[0]),
+                CardPattern.findCardPattern("diamond")));
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(dealerCards.split(",")[1]),
+                CardPattern.findCardPattern("diamond")));
+
+
+        users.getUsers().add(user);
+        ruleService.settleFirstRound(users,dealer);
+
+        assertThat(user.getRevenueMoney()).isEqualTo(Integer.parseInt(revenue));
+
     }
 
     private Users setUsers(String names) {

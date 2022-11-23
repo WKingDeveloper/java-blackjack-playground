@@ -6,7 +6,4 @@ public class Dealer extends Player{
         super("dealer");
     }
 
-    public Dealer(String name) {
-        super(name);
-    }
 }

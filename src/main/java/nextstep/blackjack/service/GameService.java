@@ -10,7 +10,6 @@ public class GameService {
 
     public static void main(String[] args) {
 
-
         ValidationPlayer validationPlayer = new ValidationPlayer();
         boolean validNamesResult = true;
 
@@ -31,6 +30,8 @@ public class GameService {
 
         RuleService ruleService = new RuleService();
         ruleService.firstDraw(users,dealer);
+
+        ruleService.settleFirstRound(users,dealer);
 
     }
 }

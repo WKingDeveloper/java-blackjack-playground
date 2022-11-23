@@ -10,6 +10,9 @@ public class Users {
 
     Set<User> users = new HashSet<>();
 
+    public Users() {
+    }
+
     public Users(String[] splitNames) {
         Arrays.stream(splitNames).forEach(name -> users.add(new User(name)));
     }
