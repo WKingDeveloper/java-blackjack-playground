@@ -55,4 +55,15 @@ public abstract class Player {
     public void setRevenueMoney(Integer money) {
         this.revenueMoney = new Money(money);
     }
+
+    public String getCardsNames(){
+        String cardsNames = "";
+
+        for (Card card : this.cards.getCards()) {
+            cardsNames += ", "+card.getCardName();
+        }
+
+        return cardsNames.replaceFirst(", ","");
+    };
+
 }

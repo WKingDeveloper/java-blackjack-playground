@@ -10,7 +10,12 @@ public class Card {
         this.pattern = pattern;
     }
 
+
     public Integer getValue() {
         return number.getValue();
+    }
+
+    public String getCardName() {
+        return number.getName() + pattern.getName();
     }
 }

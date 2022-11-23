@@ -5,6 +5,7 @@ import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
 import nextstep.blackjack.valid.ValidationPlayer;
 import nextstep.blackjack.view.InputView;
+import nextstep.blackjack.view.ResultView;
 
 public class GameService {
 
@@ -30,6 +31,7 @@ public class GameService {
 
         RuleService ruleService = new RuleService();
         ruleService.firstDraw(users,dealer);
+        ResultView.firstRoundResult(users, dealer);
 
         ruleService.settleFirstRound(users,dealer);
 
