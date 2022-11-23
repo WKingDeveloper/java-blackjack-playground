@@ -1,6 +1,7 @@
 package nextstep.blackjack.service;
 
 import nextstep.blackjack.model.Dealer;
+import nextstep.blackjack.model.User;
 import nextstep.blackjack.model.Users;
 import nextstep.blackjack.valid.ValidationPlayer;
 import nextstep.blackjack.view.InputView;
@@ -23,6 +24,10 @@ public class GameService {
 
         Users users = new Users(splitNames);
         Dealer dealer = new Dealer();
+
+        for (User user : users.getUsers()) {
+            user.setBatMoney(InputView.inputBatMoney(user.getName()));
+        }
 
     }
 }
