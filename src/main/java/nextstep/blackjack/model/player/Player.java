@@ -42,7 +42,7 @@ public abstract class Player {
     public String getCardsNames() {
         String cardNames = "";
         for(Card card : this.cards.getCards()){
-            cardNames += ", " + card.getNumber().getValue().toString() +card.getPattern().getValue().toString();
+            cardNames += ", " + card.getNumber().getNumber() +card.getPattern().getValue().toString();
         }
         cardNames = cardNames.replaceFirst(", ", "");
         return cardNames;
