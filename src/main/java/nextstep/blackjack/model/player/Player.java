@@ -38,8 +38,7 @@ public abstract class Player {
 
     public void addTwoCards(Cards gameCards) {
         for (int i = 0; i < 2; i++) {
-            this.cards.getCards().add(gameCards.getCards().get(i));
-            gameCards.getCards().remove(i);
+            addCard(gameCards.getCards().get(i));
         }
     }
 
@@ -65,5 +64,9 @@ public abstract class Player {
 
         return cardsNames.replaceFirst(", ","");
     };
+
+    public void addCard(Card card) {
+        this.cards.getCards().add(card);
+    }
 
 }

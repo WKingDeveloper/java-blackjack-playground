@@ -53,4 +53,10 @@ public class Cards {
         return sum[0];
     }
 
+    public void removeCard(int count) {
+        for (int i = 0; i < count; i++) {
+            cards.remove(i);
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 package nextstep.blackjack.service;
 
+import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Dealer;
 import nextstep.blackjack.model.player.User;
@@ -14,9 +15,17 @@ public class RuleService {
         this.gameCards.setGameCards();
     }
 
+    public void addCardsByPlayer(User user) {
+        Card card = this.gameCards.getCards().get(0);
+        user.addCard(card);
+        this.gameCards.removeCard(1);
+    }
+
     public void firstDraw(Users users, Dealer dealer) {
         users.addAllUsersTwoCards(this.gameCards);
+        this.gameCards.removeCard(users.getUsersSize());
         dealer.addTwoCards(this.gameCards);
+        this.gameCards.removeCard(1);
     }
 
     public void settleFirstRound(Users users, Dealer dealer) {

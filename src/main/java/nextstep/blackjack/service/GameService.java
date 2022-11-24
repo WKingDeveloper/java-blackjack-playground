@@ -13,10 +13,13 @@ public class GameService {
 
         ValidationPlayer validationPlayer = new ValidationPlayer();
         boolean validNamesResult = true;
+        InputView inputView = new InputView();
+        ResultView resultView = new ResultView();
+
 
         String names="";
         while (validNamesResult){
-            names = InputView.init();
+            names = inputView.init();
             validNamesResult = !validationPlayer.validNames(names);
         }
 
@@ -26,14 +29,25 @@ public class GameService {
         Dealer dealer = new Dealer();
 
         for (User user : users.getUsers()) {
-            user.setBatMoney(InputView.inputBatMoney(user.getName()));
+            user.setBatMoney(inputView.inputBatMoney(user.getName()));
         }
 
         RuleService ruleService = new RuleService();
         ruleService.firstDraw(users,dealer);
-        ResultView.firstRoundResult(users, dealer);
+        resultView.firstRoundResult(users, dealer);
 
         ruleService.settleFirstRound(users,dealer);
 
+        for (User user : users.getUsers()) {
+            if(user.getRevenueMoney() != 0) continue;
+            boolean isAdd = true;
+            while (isAdd){
+                if(user.getCardsValue()>20) break;
+                isAdd = inputView.inputAddUserCard(user.getName());
+                if (!isAdd) break;
+                ruleService.addCardsByPlayer(user);
+                resultView.printPlayerCards(user);
+            }
+        }
     }
 }
