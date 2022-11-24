@@ -23,4 +23,16 @@ public class ResultView {
         System.out.println("딜러는 16이하라 한장의 카드를 더 받았습니다.");
         printPlayerCards(dealer);
     }
+
+    public void result(Users users, Dealer dealer) {
+        printPlayerRevenue(dealer);
+        for (User user : users.getUsers()) {
+            printPlayerRevenue(user);
+        }
+    }
+
+    private void printPlayerRevenue(Player player) {
+        System.out.println("## 최종수익");
+        System.out.println(player.getName() + " : " + player.getRevenueMoney());
+    }
 }

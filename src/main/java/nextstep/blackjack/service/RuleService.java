@@ -7,6 +7,9 @@ import nextstep.blackjack.model.player.Player;
 import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class RuleService {
 
     private Cards gameCards;
@@ -54,5 +57,45 @@ public class RuleService {
         if(dealer.getCardsValue()>16) return false;
         addCardsByPlayer(dealer);
         return true;
+    }
+
+    public void settleFinalRound(Users users, Dealer dealer) {
+
+        for(User user : users.getUsers()){
+            Integer userRevenue = user.getRevenueMoney();
+            Integer dealerRevenue = dealer.getRevenueMoney();
+
+            if(userRevenue!=0) {
+                dealer.setRevenueMoney(dealerRevenue += userRevenue * -1);
+                continue;
+            }
+
+            Integer userValue = user.getCardsValue();
+            Integer dealerValue = dealer.getCardsValue();
+
+
+            Integer userBatMoney = user.getBatMoney();
+
+            if(dealerValue>21){
+                user.setRevenueMoney(userBatMoney);
+                dealer.setRevenueMoney(dealerRevenue += userBatMoney * -1);
+                continue;
+            }
+
+            if(userValue>21 || dealerValue>= userValue){
+                user.setRevenueMoney(userBatMoney * -1);
+                dealer.setRevenueMoney(dealerRevenue += userBatMoney);
+                continue;
+            }
+
+            user.setRevenueMoney(userBatMoney);
+            dealer.setRevenueMoney(dealerRevenue += userBatMoney * -1);
+
+
+
+        }
+
+
+
     }
 }

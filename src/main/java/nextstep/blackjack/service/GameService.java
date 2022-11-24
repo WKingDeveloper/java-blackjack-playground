@@ -53,5 +53,9 @@ public class GameService {
         boolean isAddByDealerCard = ruleService.addCardByDealer(dealer);
         if(isAddByDealerCard) resultView.addDealerCard(dealer);
 
+        ruleService.settleFinalRound(users, dealer);
+
+        resultView.result(users,dealer);
+
     }
 }

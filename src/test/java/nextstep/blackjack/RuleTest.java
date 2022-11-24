@@ -106,4 +106,39 @@ public class RuleTest {
         assertThat(dealer.getCards().size()).isEqualTo(cardSize);
     }
 
+    @ParameterizedTest
+    @CsvSource(value = {"A,10,3/ 3,4,2/ 1000/ 1000/ -1000","7,8,6/ 5,6,K/ 1000/ -1000/ 1000",
+            "6,8,7/ 5,J,K/ 1000/ 1000/ -1000", "4,10,K/ 5,J,2/ 1000/ -1000/ 1000"}
+            ,delimiterString = "/")
+    @DisplayName("최종 수익 계산")
+    void calculateFinalRound(String userCards, String dealerCards, String batMoney, Integer userRevenue, Integer dealerRevenue) {
+
+        Users users = new Users();
+        User user = new User("wkd");
+        RuleService ruleService = new RuleService();
+        Dealer dealer = new Dealer();
+
+        user.getCards().add(new Card(CardNumber.findCardNumber(userCards.split(",")[0]),
+                CardPattern.findCardPattern("diamond")));
+        user.getCards().add(new Card(CardNumber.findCardNumber(userCards.split(",")[1]),
+                CardPattern.findCardPattern("heart")));
+        user.getCards().add(new Card(CardNumber.findCardNumber(userCards.split(",")[2]),
+                CardPattern.findCardPattern("clover")));
+        user.setBatMoney(batMoney);
+
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(dealerCards.split(",")[0]),
+                CardPattern.findCardPattern("spade")));
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(dealerCards.split(",")[1]),
+                CardPattern.findCardPattern("clover")));
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(dealerCards.split(",")[2]),
+                CardPattern.findCardPattern("heart")));
+
+
+        users.getUsers().add(user);
+        ruleService.settleFinalRound(users,dealer);
+        assertThat(user.getRevenueMoney()).isEqualTo(userRevenue);
+        assertThat(dealer.getRevenueMoney()).isEqualTo(dealerRevenue);
+
+    }
+
 }
