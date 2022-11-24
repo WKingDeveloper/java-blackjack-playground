@@ -89,4 +89,21 @@ public class RuleTest {
         assertThat(user.getCards().size()).isEqualTo(3);
     }
 
+
+    @ParameterizedTest
+    @CsvSource(value = {"8,10/ 2","4,6/ 3"}
+            ,delimiterString = "/")
+    @DisplayName("딜러가 갖고있는 2장의 카드의 합이 16이하인 경우 한장을 더 받는다")
+    void addDealerCardIfCardValueSixteenNotMoreThan(String cards, Integer cardSize) {
+        Dealer dealer = new Dealer();
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(cards.split(",")[0]),
+                CardPattern.findCardPattern("diamond")));
+        dealer.getCards().add(new Card(CardNumber.findCardNumber(cards.split(",")[1]),
+                CardPattern.findCardPattern("diamond")));
+
+        RuleService ruleService = new RuleService();
+        ruleService.addCardByDealer(dealer);
+        assertThat(dealer.getCards().size()).isEqualTo(cardSize);
+    }
+
 }

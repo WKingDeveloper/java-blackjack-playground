@@ -49,5 +49,9 @@ public class GameService {
                 resultView.printPlayerCards(user);
             }
         }
+
+        boolean isAddByDealerCard = ruleService.addCardByDealer(dealer);
+        if(isAddByDealerCard) resultView.addDealerCard(dealer);
+
     }
 }

@@ -3,6 +3,7 @@ package nextstep.blackjack.service;
 import nextstep.blackjack.model.card.Card;
 import nextstep.blackjack.model.card.Cards;
 import nextstep.blackjack.model.player.Dealer;
+import nextstep.blackjack.model.player.Player;
 import nextstep.blackjack.model.player.User;
 import nextstep.blackjack.model.player.Users;
 
@@ -15,9 +16,9 @@ public class RuleService {
         this.gameCards.setGameCards();
     }
 
-    public void addCardsByPlayer(User user) {
+    public void addCardsByPlayer(Player player) {
         Card card = this.gameCards.getCards().get(0);
-        user.addCard(card);
+        player.addCard(card);
         this.gameCards.removeCard(1);
     }
 
@@ -47,5 +48,11 @@ public class RuleService {
 
     private boolean hasBlackJack(Integer value) {
         return value == 21;
+    }
+
+    public boolean addCardByDealer(Dealer dealer) {
+        if(dealer.getCardsValue()>16) return false;
+        addCardsByPlayer(dealer);
+        return true;
     }
 }
